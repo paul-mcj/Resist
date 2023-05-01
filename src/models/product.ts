@@ -4,6 +4,8 @@ interface Product {
      image: string;
      seller: string;
      price: number;
+     timestamp: Date;
+     id: string;
 }
 
 export default Product;

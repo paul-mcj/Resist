@@ -14,6 +14,8 @@ const initialValues: Product = {
      image: "",
      seller: "",
      price: 0.0,
+     timestamp: new Date(),
+     id: "",
 };
 
 // yup validation schema for all input elements
