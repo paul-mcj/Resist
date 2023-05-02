@@ -7,6 +7,9 @@ import * as Yup from "yup";
 // models
 import Product from "@/models/product";
 
+// uuid
+import { v4 as uuidv4 } from "uuid";
+
 // initial form values of type Product
 const initialValues: Product = {
      title: "",
@@ -38,49 +41,62 @@ const validationSchema = Yup.object({
           .required("Required field"),
 });
 
-const NewProductForm = () => {
+type NewProductFormProps = {
+     onAddProduct: (product: Product) => void;
+};
+
+const NewProductForm = ({ onAddProduct }: NewProductFormProps) => {
      return (
           <Formik
                initialValues={initialValues}
                validationSchema={validationSchema}
                onSubmit={(values, { setSubmitting }) => {
                     setTimeout(() => {
-                         alert(JSON.stringify(values, null, 2));
+                         values.id = uuidv4();
                          setSubmitting(false);
-                    }, 500);
+                         onAddProduct(values);
+                    }, 5000);
                }}
           >
-               <Form>
-                    <label htmlFor="title">title</label>
-                    <Field name="title" type="text" />
-                    <ErrorMessage name="title" />
+               {({ isValid, isSubmitting }) => (
+                    <Form>
+                         <label htmlFor="title">title</label>
+                         <Field name="title" type="text" />
+                         <ErrorMessage name="title" />
 
-                    <label htmlFor="description">description</label>
-                    <Field name="description" type="text" />
-                    <ErrorMessage name="description" />
+                         <label htmlFor="description">description</label>
+                         <Field name="description" type="text" />
+                         <ErrorMessage name="description" />
 
-                    <label htmlFor="image">image</label>
-                    <Field name="image" type="url" />
-                    <ErrorMessage name="image" />
+                         <label htmlFor="image">image</label>
+                         <Field name="image" type="url" />
+                         <ErrorMessage name="image" />
 
-                    <label htmlFor="seller">seller</label>
-                    <Field name="seller" type="text" />
-                    <ErrorMessage name="seller" />
+                         <label htmlFor="seller">seller</label>
+                         <Field name="seller" type="text" />
+                         <ErrorMessage name="seller" />
 
-                    <label htmlFor="price">price</label>
-                    <Field name="price" type="number" />
-                    <ErrorMessage name="price" />
+                         <label htmlFor="price">price</label>
+                         <Field name="price" type="number" />
+                         <ErrorMessage name="price" />
 
-                    <button type="submit">Submit</button>
-               </Form>
+                         {/* fixme:  <button type="submit"> should have access to state and change to disabled based on if the form is currently submitting or not*/}
+                         <button
+                              type="submit"
+                              disabled={isValid && isSubmitting}
+                         >
+                              Submit
+                         </button>
+                    </Form>
+               )}
           </Formik>
      );
 
-     //      Disable the submit button while the user has attempted to submit (hint: formik.isSubmitting)
      // Add a reset button with formik.handleReset or <button type="reset">.
      // Pre-populate initialValues based on URL query string or props passed to <SignupForm>.
      // Change the input border color to red when a field has an error and isn’t focused
      // Add a shake animation to each field when it displays an error and has been visited
      // Persist form state to the browser’s sessionStorage so that form progress is kept in between page refreshes
+     // reset form values (see formik docs)
 };
 export default NewProductForm;
