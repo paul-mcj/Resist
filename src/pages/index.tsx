@@ -90,6 +90,7 @@ const Home = ({ products }: HomeProps) => {
                     <li>description of website</li>
                     <li>
                          <p>Featured products slideshow</p>
+                         {/* most recent 10 items via timestamp only */}
                          {products.map((item) => (
                               <ProductDetails key={item.id} product={item} />
                          ))}
