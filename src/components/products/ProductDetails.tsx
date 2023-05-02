@@ -7,6 +7,7 @@ type ProductDetailsProps = {
 };
 
 const ProductDetails = ({ product }: ProductDetailsProps) => {
+     // console.log(product);
      return <div>{product.description}</div>;
 };
 export default ProductDetails;
