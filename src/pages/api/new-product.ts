@@ -7,16 +7,19 @@ import { NextApiRequest, NextApiResponse } from "next";
 // mongodb
 import { MongoClient } from "mongodb";
 
-// dotenv & environment variable extraction
-require("dotenv").config();
-const uri = process.env.MONGO_URI!;
+// dotenv
+import dotenv from "dotenv";
+dotenv.config();
 
+// fixme: make it a util function,, as it used in many components in this app!!!
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
      if (req.method === "POST") {
           try {
                const data = req.body;
 
-               const clientConnection = await MongoClient.connect(uri);
+               const clientConnection = await MongoClient.connect(
+                    process.env.MONGO_URI!
+               );
 
                const db = clientConnection.db();
 

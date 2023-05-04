@@ -18,7 +18,6 @@ const initialValues: Product = {
      seller: "",
      price: 0.0,
      timestamp: new Date(),
-     id: "",
 };
 
 // yup validation schema for all input elements
@@ -52,7 +51,6 @@ const NewProductForm = ({ onAddProduct }: NewProductFormProps) => {
                validationSchema={validationSchema}
                onSubmit={(values, { setSubmitting }) => {
                     setTimeout(() => {
-                         values.id = uuidv4();
                          setSubmitting(false);
                          onAddProduct(values);
                     }, 5000);

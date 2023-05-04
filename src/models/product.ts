@@ -5,7 +5,7 @@ interface Product {
      seller: string;
      price: number;
      timestamp: Date;
-     id: string;
+     id?: string;
 }
 
 export default Product;

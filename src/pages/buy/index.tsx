@@ -1,81 +1,53 @@
-// uuid
-import { v4 as uuidv4 } from "uuid";
-
-const DUMMY_ITEMS = [
-     {
-          title: "Item 1",
-          description: "This is item 1",
-          seller: "Seller 1",
-          image: "https://example.com/item1.jpg",
-          price: 10.99,
-          timestamp: Date.now(),
-          id: uuidv4(),
-     },
-     {
-          title: "Item 2",
-          description: "This is item 2",
-          seller: "Seller 2",
-          image: "https://example.com/item2.jpg",
-          price: 15.99,
-          timestamp: Date.now(),
-          id: uuidv4(),
-     },
-     {
-          title: "Item 3",
-          description: "This is item 3",
-          seller: "Seller 3",
-          image: "https://example.com/item3.jpg",
-          price: 12.99,
-          timestamp: Date.now(),
-          id: uuidv4(),
-     },
-     {
-          title: "Item 4",
-          description: "This is item 4",
-          seller: "Seller 4",
-          image: "https://example.com/item4.jpg",
-          price: 9.99,
-          timestamp: Date.now(),
-          id: uuidv4(),
-     },
-     {
-          title: "Item 5",
-          description: "This is item 5",
-          seller: "Seller 5",
-          image: "https://example.com/item5.jpg",
-          price: 19.99,
-          timestamp: Date.now(),
-          id: uuidv4(),
-     },
-     {
-          title: "Item 6",
-          description: "This is item 6",
-          seller: "Seller 6",
-          image: "https://example.com/item6.jpg",
-          price: 7.99,
-          timestamp: Date.now(),
-          id: uuidv4(),
-     },
-     {
-          title: "Item 7",
-          description: "This is item 7",
-          seller: "Seller 7",
-          image: "https://example.com/item7.jpg",
-          price: 11.99,
-          timestamp: Date.now(),
-          id: uuidv4(),
-     },
-];
+// models
+import Product from "@/models/product";
 
 // components
 import ProductList from "@/components/products/ProductList";
 
-const BuyPage = () => {
+// mongodb
+import { MongoClient } from "mongodb";
+
+// next
+import { GetStaticProps } from "next";
+
+type BuyPageProps = {
+     products: Product[];
+};
+
+const BuyPage = ({ products }: BuyPageProps) => {
      return (
           <>
                <div>BuyPage</div>
-               {/* <ProductList products={DUMMY_ITEMS} /> */}
+               {/* fixme: the below props need to be fetched from mongodb, or passed from the original ssg made in the home index file get static props!! */}
+               {/* <ProductList products={products} /> */}
           </>
      );
 };
+
+// export const getStaticProps: GetStaticProps = async ({ params }) => {
+//      const productId = params!.productId!.toString();
+
+//      const clientConnection = await MongoClient.connect(process.env.MONGO_URI!);
+
+//      const db = clientConnection.db();
+
+//      const productsCollection = db.collection("products");
+
+//      const products = await productsCollection.find().toArray();
+
+//      const result = products.filter(
+//           (item) => item._id.toString() === productId
+//      );
+
+//      console.log(result);
+
+//      clientConnection.close();
+
+//      return {
+//           props: {
+//                product: JSON.parse(JSON.stringify(result)),
+//           },
+//      };
+// };
+
 export default BuyPage;
