@@ -6,70 +6,34 @@ import Product from "@/models/product";
 import { GetStaticPaths, GetStaticProps } from "next";
 
 // mongodb
-import { MongoClient } from "mongodb";
+import { Document } from "mongodb";
 
-// uuid
-import { v4 as uuidv4 } from "uuid";
+// utils
+import backend from "../../../utils/mongodbConnect";
 
 type ProductIdProps = {
      product: Product;
 };
 
 const ProductId = ({ product }: ProductIdProps) => {
-     return (
-          <>
-               <ProductDetails product={product} />
-          </>
-     );
+     return <ProductDetails product={product} />;
 };
 
-export const getStaticPaths: GetStaticPaths = async (context) => {
-     //note: fetch array and get all ids by mapping, then generate params below
-     // fetch data
-     const clientConnection = await MongoClient.connect(process.env.MONGO_URI!);
-
-     const db = clientConnection.db();
-
-     const productsCollection = db.collection("products");
-
-     const products = await productsCollection.find().toArray();
-
-     clientConnection.close();
-
-     const getParamIds = products.map((item) => {
-          return {
-               params: {
-                    productId: item._id.toString(),
-               },
-          };
-     });
-
-     console.log(getParamIds);
+export const getStaticPaths: GetStaticPaths = async () => {
+     const result = await backend("GENERATE_PATHS");
 
      return {
           fallback: false,
-          paths: getParamIds,
+          paths: result!.map((item: Document) => ({
+               params: { productId: item._id.toString() },
+          })),
      };
 };
 
 export const getStaticProps: GetStaticProps = async ({ params }) => {
      const productId = params!.productId!.toString();
 
-     const clientConnection = await MongoClient.connect(process.env.MONGO_URI!);
-
-     const db = clientConnection.db();
-
-     const productsCollection = db.collection("products");
-
-     const products = await productsCollection.find().toArray();
-
-     const result = products.filter(
-          (item) => item._id.toString() === productId
-     );
-
-     console.log(result);
-
-     clientConnection.close();
+     const result = await backend("FIND_ONE", productId);
 
      return {
           props: {

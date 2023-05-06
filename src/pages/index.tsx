@@ -7,15 +7,11 @@ import Product from "@/models/product";
 // components
 import ProductDetails from "@/components/products/ProductDetails";
 
-// uuid
-import { v4 as uuidv4 } from "uuid";
-
 // mongodb
-import { MongoClient } from "mongodb";
+import { Document } from "mongodb";
 
-// // dotenv
-// import dotenv from "dotenv";
-// dotenv.config();
+// utils
+import backend from "../../utils/mongodbConnect";
 
 // props types
 type HomeProps = {
@@ -43,20 +39,11 @@ const Home = ({ products }: HomeProps) => {
 };
 
 export const getStaticProps = async () => {
-     // fetch data
-     const clientConnection = await MongoClient.connect(process.env.MONGO_URI!);
-
-     const db = clientConnection.db();
-
-     const productsCollection = db.collection("products");
-
-     const products = await productsCollection.find().toArray();
-
-     clientConnection.close();
+     const result = await backend("FIND_ALL");
 
      return {
           props: {
-               products: products.map((item) => ({
+               products: result!.map((item: Document) => ({
                     title: item.title,
                     description: item.description,
                     image: item.image,
