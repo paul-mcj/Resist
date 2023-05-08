@@ -9,6 +9,7 @@ import { MongoClient } from "mongodb";
 
 // next
 import { GetStaticProps } from "next";
+import Head from "next/head";
 
 type BuyPageProps = {
      products: Product[];
@@ -17,6 +18,14 @@ type BuyPageProps = {
 const BuyPage = ({ products }: BuyPageProps) => {
      return (
           <>
+               <Head>
+                    <link rel="icon" href="/favicon-buy.png" type="image/png" />
+                    <title>Resist® | Buy</title>
+                    <meta
+                         name="description"
+                         content="Browse for used outdoor equipment to purchase"
+                    />
+               </Head>
                <div>BuyPage</div>
                {/* fixme: the below props need to be fetched from mongodb, or passed from the original ssg made in the home index file get static props!! */}
                {/* <ProductList products={products} /> */}

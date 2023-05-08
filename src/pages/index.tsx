@@ -1,4 +1,5 @@
-// import Head from "next/head";
+// next
+import Head from "next/head";
 // import styles from "@/styles/Home.module.css";
 
 // models
@@ -21,6 +22,14 @@ type HomeProps = {
 const Home = ({ products }: HomeProps) => {
      return (
           <>
+               <Head>
+                    <link rel="icon" href="/favicon-home.ico" />
+                    <title>Resist® | Home</title>
+                    <meta
+                         name="description"
+                         content="Buy and sell used outdoor equipment"
+                    />
+               </Head>
                <h1>Home Page:</h1>
                <ul>
                     <li>hero image</li>
@@ -29,7 +38,11 @@ const Home = ({ products }: HomeProps) => {
                          <p>Featured products slideshow</p>
                          {/* most recent 10 items via timestamp only */}
                          {products.map((item) => (
-                              <ProductDetails key={item.id} product={item} />
+                              <ProductDetails
+                                   key={item.id}
+                                   product={item}
+                                   isHomePage={true}
+                              />
                          ))}
                     </li>
                     <li>footer</li>

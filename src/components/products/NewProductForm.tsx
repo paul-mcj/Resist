@@ -7,9 +7,6 @@ import * as Yup from "yup";
 // models
 import Product from "@/models/product";
 
-// uuid
-import { v4 as uuidv4 } from "uuid";
-
 // initial form values of type Product
 const initialValues: Product = {
      title: "",
@@ -29,7 +26,10 @@ const validationSchema = Yup.object({
           .max(100, "Must be 100 characters or less")
           .required("Required field"),
      image: Yup.string()
-          .matches(/\.(jpg|png)$/i, "Image must be of format '.png' or '.jpg'")
+          .matches(
+               /^(http:\/\/|https:\/\/).*\.(png|jpe?g)$/i,
+               "Image must be of format '.png' or '.jpg'"
+          )
           .required("Required field"),
      seller: Yup.string()
           .max(20, "Must be 20 characters or less")
@@ -78,6 +78,8 @@ const NewProductForm = ({ onAddProduct }: NewProductFormProps) => {
                          <Field name="price" type="number" />
                          <ErrorMessage name="price" />
 
+                         {/* fixme: radio button for "category" (ex. fishing, footware, etc.): */}
+
                          {/* fixme:  <button type="submit"> should have access to state and change to disabled based on if the form is currently submitting or not*/}
                          <button
                               type="submit"
@@ -96,5 +98,11 @@ const NewProductForm = ({ onAddProduct }: NewProductFormProps) => {
      // Add a shake animation to each field when it displays an error and has been visited
      // Persist form state to the browser’s sessionStorage so that form progress is kept in between page refreshes
      // reset form values (see formik docs)
+
+     // It is possible to infect a site with a file ending in .jpg if the file contains malicious code or is used to exploit a vulnerability in the website's software. This can happen, for example, if an attacker uploads a JPG file that contains embedded code that can be executed on the server or in the user's browser.
+
+     // However, it is important to note that simply changing the file extension of a malicious file to ".jpg" will not prevent it from being detected by anti-virus software or security scanners. These tools can detect the contents of a file and flag it as malware regardless of its extension.
+
+     // To help prevent malicious files from being uploaded to your site, it is recommended to use input validation and sanitization techniques, as well as limit the file types and sizes that can be uploaded.
 };
 export default NewProductForm;

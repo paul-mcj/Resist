@@ -7,29 +7,19 @@ import { NextApiRequest, NextApiResponse } from "next";
 // mongodb
 import { MongoClient } from "mongodb";
 
+// utils
+import backend from "../../../utils/mongodbConnect";
+
 // dotenv
 import dotenv from "dotenv";
 dotenv.config();
 
-// fixme: make it a util function,, as it used in many components in this app!!!
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
      if (req.method === "POST") {
           try {
                const data = req.body;
 
-               const clientConnection = await MongoClient.connect(
-                    process.env.MONGO_URI!
-               );
-
-               const db = clientConnection.db();
-
-               const productsCollection = db.collection("products");
-
-               const result = await productsCollection.insertOne(data);
-
-               console.log(result);
-
-               clientConnection.close();
+               backend("INSERT_ONE", undefined, data);
 
                // successful insertion of data should show this message
                res.status(201).json({
